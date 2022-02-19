@@ -25,7 +25,7 @@ public class CountryController {
     }
 
     @GetMapping("/name/{name}")
-    public Mono<Country> queryCountriesByName(@PathVariable(value = "name") String name) {
+    public Flux<Country> queryCountriesByName(@PathVariable(value = "name") String name) {
         return countryService.queryCountryByName(name);
     }
 }

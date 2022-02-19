@@ -3,11 +3,13 @@ package com.test.country.client;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 @Component
 public class CountryClient {
@@ -21,7 +23,9 @@ public class CountryClient {
         this.client = builder.baseUrl(countryClientUrl).filters(exchangeFilterFunctions -> {
             exchangeFilterFunctions.add(logRequest());
             exchangeFilterFunctions.add(logResponse());
-        }).build();
+        }).clientConnector(new ReactorClientHttpConnector(
+                HttpClient.create().followRedirect(true)
+        )).build();
     }
 
     public WebClient getClient() {

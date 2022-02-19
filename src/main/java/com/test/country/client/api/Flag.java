@@ -1,6 +1,10 @@
 package com.test.country.client.api;
 
 public class Flag {
+
+    public Flag() {
+    }
+
     private String png;
 
     public String getPng() {

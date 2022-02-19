@@ -6,6 +6,9 @@ import java.util.List;
 
 public class CountryDTO {
 
+    public CountryDTO() {
+    }
+
     private Name name;
 
     @JsonProperty(value = "cca2")

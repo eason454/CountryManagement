@@ -7,6 +7,9 @@ import com.test.country.convert.CountryConverter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import reactor.core.publisher.Flux;
@@ -29,9 +32,10 @@ public class CountryService {
                 .retrieve().bodyToFlux(CountryDTO.class).map(CountryConverter::convertToCountry);
     }
 
-    public Mono<Country> queryCountryByName(String name) {
+    public Flux<Country> queryCountryByName(String name) {
         return countryClient.getClient().get().uri(uriBuilder -> uriBuilder.path(countryClient.getCountryClientUrl() + QUERY_BY_NAME_PATH).build(name))
-                .retrieve().bodyToMono(CountryDTO.class).map(CountryConverter::convertToCountry);
+                .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).retrieve()
+                .bodyToFlux(CountryDTO.class).map(CountryConverter::convertToCountry);
 
     }
 
