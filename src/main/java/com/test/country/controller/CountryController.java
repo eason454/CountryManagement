@@ -1,6 +1,9 @@
 package com.test.country.controller;
 
 import com.test.country.api.Country;
+import com.test.country.api.CountryEvent;
+import com.test.country.api.CountryList;
+import com.test.country.api.CountryListEvent;
 import com.test.country.service.CountryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,21 +14,33 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 @RestController
-@RequestMapping(path = "/countries", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+@RequestMapping(path = "/countries")
 public class CountryController {
 
     @Autowired
     private CountryService countryService;
 
-    public Flux<Country> queryCountries() {
-        return countryService.queryCountries();
+    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<CountryListEvent> queryCountriesAsync() {
+        return countryService.queryCountriesAsync();
     }
 
-    @GetMapping("/name/{name}")
-    public Flux<Country> queryCountriesByName(@PathVariable(value = "name") String name) {
-        return countryService.queryCountryByName(name);
+    @GetMapping(value= "/name/{name}",  produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<CountryEvent> queryCountryByNameAsync(@PathVariable(value = "name") String name) {
+        return countryService.queryCountryByNameAsync(name);
+    }
+
+    @GetMapping(value = "/all",  produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CountryList> queryCountriesSync() {
+        return countryService.queryCountriesSync();
+    }
+
+    @GetMapping(value= "/name/{name}",  produces = MediaType.APPLICATION_JSON_VALUE)
+    public Country queryCountryByNameSync(@PathVariable(value = "name") String name) {
+        return countryService.queryCountryByNameSync(name);
     }
 }

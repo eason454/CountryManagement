@@ -24,6 +24,7 @@ public class CountryClient {
             exchangeFilterFunctions.add(logRequest());
             exchangeFilterFunctions.add(logResponse());
         }).clientConnector(new ReactorClientHttpConnector(
+                //Handle 301
                 HttpClient.create().followRedirect(true)
         )).build();
     }
@@ -43,7 +44,7 @@ public class CountryClient {
                 //append clientRequest method and url
                 clientRequest
                         .headers()
-                        .forEach((name, values) -> values.forEach(value -> sb.append(value)));
+                        .forEach((name, values) -> values.forEach(sb::append));
                 log.debug(sb.toString());
             }
             return Mono.just(clientRequest);

@@ -18,6 +18,7 @@ public class CountryDTO {
 
     private Long population;
 
+    @JsonProperty("flags")
     private Flag flag;
 
     public Name getName() {
