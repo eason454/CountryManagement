@@ -1,15 +1,14 @@
 package com.test.country.service;
 
 import com.test.country.api.*;
-import com.test.country.client.CountryClient;
 import com.test.country.client.api.CountryDTO;
 import com.test.country.convert.CountryConverter;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.stereotype.Service;
 
 import org.springframework.web.reactive.function.client.ClientResponse;
@@ -17,6 +16,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.netty.http.client.HttpClient;
 
 import java.util.List;
 import java.util.Objects;
@@ -25,13 +25,40 @@ import java.util.Objects;
 public class CountryService {
 
     @Value("${country.client.query.all.path}")
-    private String QUERY_ALL_PATH;
+    private String queryAllPath;
 
     @Value("${country.client.query.name.path}")
-    private String QUERY_BY_NAME_PATH;
+    private String queryNamePath;
 
-    @Autowired
-    private CountryClient countryClient;
+    @Value("${country.client.url}")
+    private String countryClientUrl;
+
+    private WebClient webClient;
+
+    public CountryService() {
+        this.webClient = buildWebClient();
+    }
+
+    public CountryService(String countryClientUrl) {
+        this.countryClientUrl = countryClientUrl;
+        this.webClient = buildWebClient();
+    }
+
+    public String getQueryAllPath() {
+        return queryAllPath;
+    }
+
+    public void setQueryAllPath(String queryAllPath) {
+        this.queryAllPath = queryAllPath;
+    }
+
+    public String getQueryNamePath() {
+        return queryNamePath;
+    }
+
+    public void setQueryNamePath(String queryNamePath) {
+        this.queryNamePath = queryNamePath;
+    }
 
     public Flux<CountryListEvent> queryCountriesAsync() {
         return callActualServiceToQueryAllAsync();
@@ -99,12 +126,12 @@ public class CountryService {
     }
 
     private WebClient.ResponseSpec constructQueryCountry(String name) {
-        return countryClient.getClient().get().uri(uriBuilder -> uriBuilder.path(countryClient.getCountryClientUrl() + QUERY_BY_NAME_PATH).build(name))
+        return webClient.get().uri(uriBuilder -> uriBuilder.path(countryClientUrl + queryNamePath).build(name))
                 .header(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE).retrieve();
     }
 
     private WebClient.ResponseSpec constructQueryAll() {
-        return countryClient.getClient().get().uri(countryClient.getCountryClientUrl() + QUERY_ALL_PATH)
+        return webClient.get().uri(countryClientUrl + queryAllPath)
                 .retrieve();
     }
 
@@ -118,6 +145,14 @@ public class CountryService {
 
     private Mono<ResponseStatusException> buildException(ClientResponse error) {
         return error.bodyToMono(ErrorMessage.class).flatMap(e -> Mono.error(new ResponseStatusException(error.statusCode(), e.getMessage())));
+    }
+
+
+    private WebClient buildWebClient() {
+        return WebClient.builder().clientConnector(new ReactorClientHttpConnector(
+                //Handle 301
+                HttpClient.create().followRedirect(true)
+        )).build();
     }
 
 }

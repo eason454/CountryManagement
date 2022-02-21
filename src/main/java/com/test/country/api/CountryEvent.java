@@ -11,6 +11,7 @@ public class CountryEvent implements Serializable {
     private ErrorMessage error;
 
     public CountryEvent() {
+        //Jackson need an empty constructor
     }
 
     public CountryEvent(Country country, EventType type, ErrorMessage error) {

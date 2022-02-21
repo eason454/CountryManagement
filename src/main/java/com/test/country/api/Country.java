@@ -1,6 +1,7 @@
 package com.test.country.api;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Country implements Serializable {
     private static final long serialVersionUID = -2755594536856654536L;
@@ -11,6 +12,7 @@ public class Country implements Serializable {
     private String flagFileUrl;
 
     public Country() {
+        //Jackson need an empty constructor
     }
 
     public String getName() {
@@ -51,5 +53,22 @@ public class Country implements Serializable {
 
     public void setFlagFileUrl(String flagFileUrl) {
         this.flagFileUrl = flagFileUrl;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Country)) {
+            return false;
+        }
+        Country country = (Country) o;
+        return Objects.equals(name, country.name) && Objects.equals(countryCode, country.countryCode) && Objects.equals(capital, country.capital) && Objects.equals(population, country.population) && Objects.equals(flagFileUrl, country.flagFileUrl);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, countryCode, capital, population, flagFileUrl);
     }
 }

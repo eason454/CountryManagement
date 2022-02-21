@@ -1,6 +1,11 @@
 package com.test.country.convert;
 
-import com.test.country.api.*;
+import com.test.country.api.Country;
+import com.test.country.api.CountryEvent;
+import com.test.country.api.CountryList;
+import com.test.country.api.CountryListEvent;
+import com.test.country.api.ErrorMessage;
+import com.test.country.api.EventType;
 import com.test.country.client.api.CountryDTO;
 import com.test.country.client.api.Flag;
 import com.test.country.client.api.Name;
@@ -13,6 +18,10 @@ import java.util.Objects;
 import java.util.Optional;
 
 public class CountryConverter {
+
+    private CountryConverter() {
+        //Util class
+    }
 
     public static Country convertToCountry(CountryDTO countryDTO) {
         if (Objects.isNull(countryDTO) || Objects.isNull(countryDTO.getName())) {

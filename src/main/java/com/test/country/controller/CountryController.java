@@ -24,7 +24,7 @@ public class CountryController {
     @Autowired
     private CountryService countryService;
 
-    @GetMapping(value = "/all", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @GetMapping(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<CountryListEvent> queryCountriesAsync() {
         return countryService.queryCountriesAsync();
     }
@@ -34,7 +34,7 @@ public class CountryController {
         return countryService.queryCountryByNameAsync(name);
     }
 
-    @GetMapping(value = "/all",  produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<CountryList> queryCountriesSync() {
         return countryService.queryCountriesSync();
     }

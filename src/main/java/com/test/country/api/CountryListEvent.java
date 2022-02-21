@@ -10,6 +10,7 @@ public class CountryListEvent implements Serializable {
     private ErrorMessage error;
 
     public CountryListEvent() {
+        //Jackson need an empty constructor
     }
 
     public CountryListEvent(CountryList country, EventType type, ErrorMessage error) {
@@ -44,8 +45,12 @@ public class CountryListEvent implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CountryListEvent)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CountryListEvent)) {
+            return false;
+        }
         CountryListEvent that = (CountryListEvent) o;
         return Objects.equals(country, that.country) && type == that.type && Objects.equals(error, that.error);
     }
