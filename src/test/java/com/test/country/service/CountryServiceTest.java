@@ -19,6 +19,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import java.io.IOException;
 import java.util.List;
@@ -57,13 +58,15 @@ class CountryServiceTest {
     void initialize() {
         String baseUrl = String.format("localhost:%s",
                 mockServer.getPort());
-        countryService = new CountryService(baseUrl);
+        countryService = new CountryService();
+        ReflectionTestUtils.setField(countryService, "countryClientUrl", baseUrl);
+        ReflectionTestUtils.setField(countryService, "queryNamePath", queryNamePath);
+        ReflectionTestUtils.setField(countryService, "queryAllPath", queryAllPath);
     }
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     void givenCountryName_whenQueryByName_thenReturnCountry(boolean isAsync) throws Exception {
-        countryService.setQueryNamePath(queryNamePath);
         CountryDTO countryDTO = mockCountry();
         mockServer.enqueue(new MockResponse().setBody(mapper.writeValueAsString(countryDTO))
                 .addHeader("Content-Type", "application/json"));
@@ -82,7 +85,6 @@ class CountryServiceTest {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     void whenQueryAllCountries_thenReturnCountries(boolean isAsync) throws Exception {
-        countryService.setQueryAllPath(queryAllPath);
         CountryDTO countryDTO = mockCountry();
         mockServer.enqueue(new MockResponse().setBody(mapper.writeValueAsString(asList(countryDTO)))
                 .addHeader("Content-Type", "application/json"));
@@ -101,8 +103,7 @@ class CountryServiceTest {
 
     @Test
     void givenCountryName_whenQueryByName_thenReturnException() throws Exception {
-        countryService.setQueryNamePath(queryNamePath);
-        //Server 4xx and 5xx exception
+        //Server 4xx and 5xx error
         ErrorMessage errorMessage = new ErrorMessage();
         errorMessage.setStatus(HttpStatus.NOT_FOUND.value());
         errorMessage.setMessage("Not Found");
@@ -124,7 +125,8 @@ class CountryServiceTest {
         CountryDTO countryDTO = mockCountry();
         mockServer.enqueue(new MockResponse().setBody(mapper.writeValueAsString(countryDTO))
                 .addHeader("Content-Type", "application/json"));
-        countryService = new CountryService("unKnownHost");
+        countryService = new CountryService();
+        ReflectionTestUtils.setField(countryService, "countryClientUrl", "unKnownHost");
         country = countryService.queryCountryByNameAsync(countryName);
         StepVerifier.create(country).expectNextMatches(e -> isMatchErrorMessage(e, HttpStatus.INTERNAL_SERVER_ERROR.value(), "unKnownHost"))
                 .verifyComplete();

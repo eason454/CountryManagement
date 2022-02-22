@@ -39,27 +39,6 @@ public class CountryService {
         this.webClient = buildWebClient();
     }
 
-    public CountryService(String countryClientUrl) {
-        this.countryClientUrl = countryClientUrl;
-        this.webClient = buildWebClient();
-    }
-
-    public String getQueryAllPath() {
-        return queryAllPath;
-    }
-
-    public void setQueryAllPath(String queryAllPath) {
-        this.queryAllPath = queryAllPath;
-    }
-
-    public String getQueryNamePath() {
-        return queryNamePath;
-    }
-
-    public void setQueryNamePath(String queryNamePath) {
-        this.queryNamePath = queryNamePath;
-    }
-
     public Flux<CountryListEvent> queryCountriesAsync() {
         return callActualServiceToQueryAllAsync();
     }
