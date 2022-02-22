@@ -8,9 +8,6 @@ Implemented reactive and traditional REST API separately by Spring Boot.
 This application is packaged as a war which has Tomcat embedded.
 
 * Clone the repository
-
-  ``` git clone git@github.com:eason454/CountryManagement.git  ```
-
 * JDK 1.8 and Maven 3.x in your environment
 * Build the project by running 
      
@@ -40,6 +37,18 @@ or
     Accept: application/json
 ```
 
+In reactive REST API, there is a field "type" to indicate if exception happens, and will
+have error information if "type" is ERROR
+
+Response without error:
+```
+data:{"country":{"name":"Finland","country_code":"FI","capital":"Helsinki","population":5530719,"flag_file_url":"https://flagcdn.com/w320/fi.png"},"type":"DATA"}
+```
+Response with error:
+```
+data:{"type":"ERROR","error":{"status":404,"message":"Not Found"}}
+```
+
 Here are some endpoints:
 
 ### Get all countries
@@ -49,11 +58,11 @@ Here are some endpoints:
 ```
 Try this API with either Postman or curl in command terminal, here is the example for curl:
 
-reactive
+Reactive
 ```
       curl --location --request GET 'http://localhost:8080/countries' --header 'Accept: text/event-stream'
 ```
-or traditional
+Or traditional
 ```
       curl --location --request GET 'http://localhost:8080/countries' --header 'Accept: application/json' 
 ```
@@ -66,11 +75,11 @@ or traditional
 
 Here is the example for curl:
 
-reactive
+Reactive
 ```
       curl --location --request GET 'http://localhost:8080/countries/name/Finland' --header 'Accept: text/event-stream'
 ```
-or traditional
+Or traditional
 ```
       curl --location --request GET 'http://localhost:8080/countries/name/Finland' --header 'Accept: application/json'
 ```
