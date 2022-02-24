@@ -1,11 +1,11 @@
 # CountryManagement microservice
 
-This is a microservice which provides a list of countries and more detailed information per country.
+This is a microservice which provides a list of countries and more detailed information per country query service.
 Implemented reactive and traditional REST API separately by Spring Boot.
 
 ## How to run
 
-This application is packaged as a war which has Tomcat embedded.
+This application is packaged as a jar which has Tomcat embedded.
 
 * Clone the repository
 * JDK 1.8 and Maven 3.x in your environment
@@ -22,14 +22,14 @@ or
 
 You should see log message below if you run it successfully: 
 ```
-    2022-02-22 19:14:43.433  INFO 7604 --- [           main] com.test.country.CountryApplication      : Started CountryApplication in 5.889 seconds (JVM running for 7.044)
+    2022-02-22 19:14:43.433  INFO 7604 --- [           main] CountryApplication      : Started CountryApplication in 5.889 seconds (JVM running for 7.044)
 ```
 
-##About APIs
+## About APIs
 
 The service is a simple country query REST service.
 
-You can consume the API with either reactive or traditional way, API will distinguish it by header in request:
+You can consume the API with either reactive or traditional way, API will distinguish it by "Accept" header in request:
 
 ```
     Accept: text/event-stream

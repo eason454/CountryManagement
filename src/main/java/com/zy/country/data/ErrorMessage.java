@@ -1,8 +1,11 @@
-package com.test.country.api;
+package com.zy.country.data;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * DTO class contains status and error message that client knows failing reason
+ */
 public class ErrorMessage implements Serializable {
     private static final long serialVersionUID = -1151625748340225278L;
     private Integer status;

@@ -1,8 +1,12 @@
-package com.test.country.api;
+package com.zy.country.data;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+
+/**
+ * DTO class for carrying single detailed country data and data type as well as error message
+ */
 public class CountryEvent implements Serializable {
 
     private static final long serialVersionUID = 4266948113221622976L;

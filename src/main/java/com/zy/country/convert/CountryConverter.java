@@ -1,14 +1,14 @@
-package com.test.country.convert;
+package com.zy.country.convert;
 
-import com.test.country.api.Country;
-import com.test.country.api.CountryEvent;
-import com.test.country.api.CountryList;
-import com.test.country.api.CountryListEvent;
-import com.test.country.api.ErrorMessage;
-import com.test.country.api.EventType;
-import com.test.country.client.api.CountryDTO;
-import com.test.country.client.api.Flag;
-import com.test.country.client.api.Name;
+import com.zy.country.data.Country;
+import com.zy.country.data.CountryEvent;
+import com.zy.country.data.CountryList;
+import com.zy.country.data.CountryListEvent;
+import com.zy.country.data.ErrorMessage;
+import com.zy.country.data.EventType;
+import com.zy.country.client.api.CountryDTO;
+import com.zy.country.client.api.Flag;
+import com.zy.country.client.api.Name;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -17,6 +17,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+/**
+ * Converter to convert response data to internal data
+ */
 public class CountryConverter {
 
     private CountryConverter() {
@@ -39,6 +42,16 @@ public class CountryConverter {
         return country;
     }
 
+    public static CountryList convertToCountryList(CountryDTO countryDTO) {
+        if (Objects.isNull(countryDTO) || Objects.isNull(countryDTO.getName())) {
+            return null;
+        }
+        CountryList country = new CountryList();
+        country.setName(Optional.ofNullable(countryDTO.getName()).map(Name::getCommon).orElse(""));
+        country.setCountryCode(countryDTO.getCountryCode());
+        return country;
+    }
+
     public static CountryEvent convertToCountry(CountryDTO countryDTO, ErrorMessage message) {
         CountryEvent countryEvent = new CountryEvent();
         if (isErrorMessageEmpty(message)) {
@@ -49,16 +62,6 @@ public class CountryConverter {
         }
         countryEvent.setCountry(convertToCountry(countryDTO));
         return countryEvent;
-    }
-
-    public static CountryList convertToCountryList(CountryDTO countryDTO) {
-        if (Objects.isNull(countryDTO) || Objects.isNull(countryDTO.getName())) {
-            return null;
-        }
-        CountryList country = new CountryList();
-        country.setName(Optional.ofNullable(countryDTO.getName()).map(Name::getCommon).orElse(""));
-        country.setCountryCode(countryDTO.getCountryCode());
-        return country;
     }
 
     public static CountryListEvent convertToCountryList(CountryDTO countryDTO, ErrorMessage message) {

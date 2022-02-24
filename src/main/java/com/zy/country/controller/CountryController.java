@@ -1,10 +1,10 @@
-package com.test.country.controller;
+package com.zy.country.controller;
 
-import com.test.country.api.Country;
-import com.test.country.api.CountryEvent;
-import com.test.country.api.CountryList;
-import com.test.country.api.CountryListEvent;
-import com.test.country.service.CountryService;
+import com.zy.country.data.Country;
+import com.zy.country.data.CountryEvent;
+import com.zy.country.data.CountryList;
+import com.zy.country.data.CountryListEvent;
+import com.zy.country.service.CountryService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

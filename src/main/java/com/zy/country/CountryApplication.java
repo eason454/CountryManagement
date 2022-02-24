@@ -1,4 +1,4 @@
-package com.test.country;
+package com.zy.country;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

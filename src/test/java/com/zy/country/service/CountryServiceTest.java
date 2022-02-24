@@ -1,15 +1,15 @@
-package com.test.country.service;
+package com.zy.country.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.test.country.api.Country;
-import com.test.country.api.CountryEvent;
-import com.test.country.api.CountryList;
-import com.test.country.api.CountryListEvent;
-import com.test.country.api.ErrorMessage;
-import com.test.country.api.EventType;
-import com.test.country.client.api.CountryDTO;
-import com.test.country.client.api.Flag;
-import com.test.country.client.api.Name;
+import com.zy.country.data.Country;
+import com.zy.country.data.CountryEvent;
+import com.zy.country.data.CountryList;
+import com.zy.country.data.CountryListEvent;
+import com.zy.country.data.ErrorMessage;
+import com.zy.country.data.EventType;
+import com.zy.country.client.api.CountryDTO;
+import com.zy.country.client.api.Flag;
+import com.zy.country.client.api.Name;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;

@@ -1,8 +1,11 @@
-package com.test.country.api;
+package com.zy.country.data;
 
 import java.io.Serializable;
 import java.util.Objects;
 
+/**
+ * DTO class for carrying country list data and data type as well as error message
+ */
 public class CountryListEvent implements Serializable {
     private static final long serialVersionUID = 32685957552553761L;
     private CountryList country;
@@ -11,12 +14,6 @@ public class CountryListEvent implements Serializable {
 
     public CountryListEvent() {
         //Jackson need an empty constructor
-    }
-
-    public CountryListEvent(CountryList country, EventType type, ErrorMessage error) {
-        this.country = country;
-        this.type = type;
-        this.error = error;
     }
 
     public CountryList getCountry() {

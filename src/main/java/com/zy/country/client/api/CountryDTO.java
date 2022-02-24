@@ -1,4 +1,4 @@
-package com.test.country.client.api;
+package com.zy.country.client.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

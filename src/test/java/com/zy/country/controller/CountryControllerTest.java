@@ -1,13 +1,13 @@
-package com.test.country.controller;
+package com.zy.country.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.test.country.api.Country;
-import com.test.country.api.CountryEvent;
-import com.test.country.api.CountryList;
-import com.test.country.api.CountryListEvent;
-import com.test.country.api.EventType;
-import com.test.country.service.CountryService;
+import com.zy.country.data.Country;
+import com.zy.country.data.CountryEvent;
+import com.zy.country.data.CountryList;
+import com.zy.country.data.CountryListEvent;
+import com.zy.country.data.EventType;
+import com.zy.country.service.CountryService;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -72,8 +72,7 @@ class CountryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(startsWith("data"))).andReturn();
         String content = result.getResponse().getContentAsString();
-        System.out.println("content----->" + content);
-        assertTrue(content.indexOf("{") > -1);
+        assertEquals(content.indexOf("{"), 5);//Response should be like: data: {}
         String jsonBody = content.substring(content.indexOf("{"));
         CountryEvent countryEventResponse = objectMapper.readValue(jsonBody, CountryEvent.class);
         assertEquals(countryEventResponse, countryEvent);
@@ -97,6 +96,7 @@ class CountryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().string(startsWith("data"))).andReturn();
         String content = result.getResponse().getContentAsString();
+        assertEquals(content.indexOf("{"), 5);//Response should be like: data: {}
         String jsonBody = content.substring(content.indexOf("{"));
         CountryListEvent countryListEventResponse = objectMapper.readValue(jsonBody, CountryListEvent.class);
         assertEquals(countryListEventResponse, countryListEvent);
